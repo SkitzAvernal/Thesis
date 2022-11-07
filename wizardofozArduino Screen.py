@@ -10,7 +10,7 @@ def wait():
 # TODO: Timeout system?
 
 ts, t1, t1r, t2, t2r, t3, t3r, tf = "-", "-", "-", "-", "-", "-", "-", "-"
-testString = "■■■■■■■■■■■■"
+testString =  "■■■■■■■■■■■■"
 emptyString = "            "
 
 board = pyfirmata.Arduino('COM3')
