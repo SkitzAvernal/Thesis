@@ -5,9 +5,9 @@ from pyfirmata import Arduino
 HIGH = 1
 LOW = 0
 
-dataIn = 2
-load = 4
-clock = 3
+dataIn = 10
+load = 9
+clock = 8
 maxInUse = 1
 
 max7219_reg_noop = 0x00
@@ -23,7 +23,7 @@ max7219_reg_decodeMode = 0x09
 max7219_reg_intensity = 0x0a
 max7219_reg_scanLimit = 0x0b
 max7219_reg_shutdown = 0x0c
-max7219_reg_displayTest = 0x0f
+max7219_reg_displayTest = 0x01
 
 class LedMatrix:
     def __init__(self, board, dataIn, load, clock, maxInUse=1):
@@ -99,41 +99,89 @@ class LedMatrix:
         self.maxAll(max7219_reg_shutdown, 0x01)
         self.maxAll(max7219_reg_displayTest, 0x00)
         self.clear()
-        self.maxAll(max7219_reg_intensity, 0x0f & 0x0f)
+        self.maxAll(max7219_reg_intensity, 0x00 & 0x00)
         print('Done')
 
 def loop(matrix):
-    matrix.maxSingle(1, 1)
-    matrix.maxSingle(2, 2)
-    matrix.maxSingle(3, 4)
-    matrix.maxSingle(4, 8)
-    matrix.maxSingle(5, 16)
-    matrix.maxSingle(6, 32)
-    matrix.maxSingle(7, 64)
-    matrix.maxSingle(8, 128)
+    #matrix.maxSingle(1, 1)
+    #matrix.maxSingle(2, 2)
+    #matrix.maxSingle(3, 4)
+    #matrix.maxSingle(4, 8)
+    #matrix.maxSingle(5, 16)
+    #matrix.maxSingle(6, 32)
+    #matrix.maxSingle(7, 64)
+    #matrix.maxSingle(8, 128)
+    #sleep(.25)
+    #matrix.clear()
+    #sleep(.25)
+    #matrix.maxAll(1, 1)
+    #matrix.maxAll(2, 3)
+    #matrix.maxAll(3, 7)
+    #matrix.maxAll(4, 15)
+    #matrix.maxAll(5, 31)
+    #matrix.maxAll(6, 63)
+    #matrix.maxAll(7, 127)
+    #matrix.maxAll(8, 255)
     sleep(.25)
     matrix.clear()
     sleep(.25)
-    matrix.maxAll(1, 1)
-    matrix.maxAll(2, 3)
-    matrix.maxAll(3, 7)
-    matrix.maxAll(4, 15)
-    matrix.maxAll(5, 31)
-    matrix.maxAll(6, 63)
-    matrix.maxAll(7, 127)
-    matrix.maxAll(8, 255)
-    sleep(.25)
-    matrix.clear()
-    sleep(.25)
-    x = [[1, 0, 0, 0, 0, 0, 0, 1],
-         [0, 1, 0, 0, 0, 0, 1, 0],
+    cross = [[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 1, 0, 0, 1, 0, 0],
          [0, 0, 0, 1, 1, 0, 0, 0],
          [0, 0, 0, 1, 1, 0, 0, 0],
          [0, 0, 1, 0, 0, 1, 0, 0],
-         [0, 1, 0, 0, 0, 0, 1, 0],
-         [1, 0, 0, 0, 0, 0, 0, 1]]
-    matrix.draw_matrix(x)
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+    matrix.draw_matrix(cross)
+    sleep(.25)
+    matrix.clear()
+    sleep(.25)
+    circle =[[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+    triangle =[[0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 1, 1, 0, 0, 0],
+           [0, 0, 1, 1, 1, 1, 0, 0],
+           [0, 0, 1, 1, 1, 1, 0, 0],
+           [0, 1, 1, 1, 1, 1, 1, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0]]
+    square =[[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+    mail =  [[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 1, 1, 1, 1, 1, 1, 0],
+         [0, 1, 1, 0, 0, 1, 1, 0],
+         [0, 1, 0, 1, 1, 0, 1, 0],
+         [0, 1, 0, 1, 1, 0, 1, 0],
+         [0, 1, 1, 1, 1, 1, 1, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+    matrix.draw_matrix(circle)
+    sleep(.25)
+    matrix.clear()
+    sleep(.25)
+    matrix.draw_matrix(square)
+    sleep(.25)
+    matrix.clear()
+    sleep(.25)
+    matrix.draw_matrix(triangle)
+    sleep(.25)
+    matrix.clear()
+    sleep(.25)
+    matrix.draw_matrix(mail)
     sleep(.25)
     matrix.clear()
     sleep(.25)
@@ -141,7 +189,7 @@ def loop(matrix):
 
 if __name__ == "__main__":
     board = Arduino('COM3')
-    matrix = LedMatrix(board, 2, 4, 3)
+    matrix = LedMatrix(board, 10, 9, 8)
     matrix.setup()
     while True:
         loop(matrix)
