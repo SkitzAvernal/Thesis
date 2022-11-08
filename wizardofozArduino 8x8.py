@@ -1,8 +1,8 @@
 import time
 import random
 import pyfirmata
-from pyfirmata import util
 import msvcrt as m
+from maxmatrix import LedMatrix
 
 def wait():
     m.getch()
@@ -10,10 +10,66 @@ def wait():
 # TODO: Timeout system?
 
 ts, t1, t1r, t2, t2r, t3, t3r, tf = "-", "-", "-", "-", "-", "-", "-", "-"
-testString =  "■■■■■■■■■■■■"
-emptyString = "            "
+# SET 1 - Simple Shapes
+cross = [[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 0, 0, 1, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 1, 0, 0, 1, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+
+circle =[[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+
+triangle =[[0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 1, 1, 0, 0, 0],
+           [0, 0, 1, 1, 1, 1, 0, 0],
+           [0, 0, 1, 1, 1, 1, 0, 0],
+           [0, 1, 1, 1, 1, 1, 1, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 0]]
+
+square =[[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+
+# SET 2 = Complex Shapes
+# Cross and Square are kept
+mail =  [[0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 1, 1, 1, 1, 1, 1, 0],
+         [0, 1, 1, 0, 0, 1, 1, 0],
+         [0, 1, 0, 1, 1, 0, 1, 0],
+         [0, 1, 0, 1, 1, 0, 1, 0],
+         [0, 1, 1, 1, 1, 1, 1, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0],
+         [0, 0, 0, 0, 0, 0, 0, 0]]
+call =  [[1, 0, 0, 0, 0, 0, 0, 1],
+         [0, 1, 0, 0, 0, 0, 1, 0],
+         [0, 0, 1, 0, 0, 1, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 0, 1, 1, 0, 0, 0],
+         [0, 0, 1, 0, 0, 1, 0, 0],
+         [0, 1, 0, 0, 0, 0, 1, 0],
+         [1, 0, 0, 0, 0, 0, 0, 1]]
+
 
 board = pyfirmata.Arduino('COM3')
+matrix = LedMatrix(board, 10, 9, 8)
+matrix.setup()
 
 def stopwatch(sec):
     mins = sec // 60
@@ -35,12 +91,25 @@ def go_to_sleep():
 
 def timecount():
     msS = current_milli_time()
-    # TODO: Change code to use screen. Right now we're just using an LED, screen code is more complicated and requries some more parts
-    board.send_sysex( pyfirmata.STRING_DATA, util.str_to_two_byte_iter(testString))
+    # TODO: Change code to use screen.
+    # TODO: Add randomizer and corresponding button
+    # Each number corresponds to each 
+    rand = random.randrange(0, 3)
+    matcher = -1
+    match rand:
+        case 0:
+            matrix.draw_matrix(cross)
+        case 1:
+            matrix.draw_matrix(circle)
+        case 2:
+            matrix.draw_matrix(triangle)
+        case 3:
+            matrix.draw_matrix(square)
+
     while m.kbhit():
         flush = wait() #Flush doesn't actually have an output, rather it's there to catch any stray inputs
     wait()
-    board.send_sysex( pyfirmata.STRING_DATA, util.str_to_two_byte_iter(emptyString))
+    matrix.clear()
     msE = current_milli_time()
     return msE - msS
 
