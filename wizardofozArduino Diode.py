@@ -39,7 +39,6 @@ def go_to_sleep():
 
 def timecount():
     msS = current_milli_time()
-    # TODO: Change code to use screen. Right now we're just using an LED, screen code is more complicated and requries some more parts
     board.digital[13].write(1)
     while m.kbhit():
         flush = wait() #Flush doesn't actually have an output, rather it's there to catch any stray inputs
