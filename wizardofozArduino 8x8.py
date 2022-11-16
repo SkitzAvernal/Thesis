@@ -108,7 +108,23 @@ def timecount():
 
     while m.kbhit():
         flush = wait() #Flush doesn't actually have an output, rather it's there to catch any stray inputs
-    wait()
+    while (matcher==-1):
+        key = m.getch()
+        #print(key)
+        match rand:
+            case 0: #cross
+                if key == b"o":
+                    break
+            case 1: #ciircle
+                if key ==  b"p":
+                    break
+            case 2: #triangle
+                if key == b"l":
+                    break
+            case 3: #square
+                if key == b";":
+                    break
+    ##key = wait()
     matrix.clear()
     msE = current_milli_time()
     return msE - msS
