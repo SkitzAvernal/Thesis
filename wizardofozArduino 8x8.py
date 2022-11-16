@@ -3,6 +3,7 @@ import random
 import pyfirmata
 import msvcrt as m
 from maxmatrix import LedMatrix
+from csv import writer
 
 def wait():
     m.getch()
@@ -149,3 +150,10 @@ print("Test 2 Time: {0} Reaction Time: {1}ms".format(t2, t2r))
 print("Test 3 Time: {0} Reaction Time: {1}ms".format(t3, t3r))
 print("Total Test Time: {0}".format(tf))
 
+curr = time.ctime(time.time())
+List = [curr, t1, t1r, t2, t2r, t3, t3r, tf]
+
+with open('test.csv', 'a') as f_object:
+    writer_object = writer(f_object)
+    writer_object.writerow(List)
+    f_object.close
