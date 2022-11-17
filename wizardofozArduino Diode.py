@@ -3,10 +3,13 @@ import random
 import pyfirmata
 import msvcrt as m
 from csv import writer
+import keyboard
 
 def wait():
     m.getch()
 
+
+# TODO: Reprogram to use
 # TODO: Timeout system?
 
 def on_press(key):
@@ -16,8 +19,9 @@ def on_release(key):
     return True
 
 ts, t1, t1r, t2, t2r, t3, t3r, tf = "-", "-", "-", "-", "-", "-", "-", "-"
-
+curr = time.ctime(time.time())
 board = pyfirmata.Arduino('COM3')
+key = 0
 
 def stopwatch(sec):
     mins = sec // 60
@@ -26,7 +30,6 @@ def stopwatch(sec):
     mins = mins % 60
     return "{0}:{1}:{2}".format(int(hours),int(mins),int(sec))
     
-
 def current_milli_time():
     return round(time.time() * 1000)
 
@@ -40,9 +43,13 @@ def go_to_sleep():
 def timecount():
     msS = current_milli_time()
     board.digital[13].write(1)
-    while m.kbhit():
-        flush = wait() #Flush doesn't actually have an output, rather it's there to catch any stray inputs
-    wait()
+    #while m.kbhit():
+    #    flush = wait() #Flush doesn't actually have an output, rather it's there to catch any stray inputs
+    #wait()
+    #while (1 ==1):
+    #    if key == 'p':
+    #        break
+    keyboard.read_event()
     board.digital[13].write(0)
     msE = current_milli_time()
     return msE - msS
@@ -67,8 +74,8 @@ print("Test 2 Time: {0} Reaction Time: {1}ms".format(t2, t2r))
 print("Test 3 Time: {0} Reaction Time: {1}ms".format(t3, t3r))
 print("Total Test Time: {0}".format(tf))
 
-curr = time.ctime(time.time())
-List = [curr, t1, t1r, t2, t2r, t3, t3r, tf]
+#curr = time.ctime(time.time())
+List = ["Diode", curr, t1, t1r, t2, t2r, t3, t3r, tf]
 
 with open('test.csv', 'a') as f_object:
     writer_object = writer(f_object)

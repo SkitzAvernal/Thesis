@@ -1,3 +1,4 @@
+# DEPRECATED, USING 8X8
 import time
 import random
 import pyfirmata
@@ -8,7 +9,8 @@ def wait():
     m.getch()
 
 # TODO: Timeout system?
-
+print("Deprecated. You probably meant to use the 8x8 system.")
+"""
 ts, t1, t1r, t2, t2r, t3, t3r, tf = "-", "-", "-", "-", "-", "-", "-", "-"
 testString =  "■■■■■■■■■■■■"
 emptyString = "            "
@@ -63,3 +65,4 @@ print("Test 1 Time: {0} Reaction Time: {1}ms".format(t1, t1r))
 print("Test 2 Time: {0} Reaction Time: {1}ms".format(t2, t2r))
 print("Test 3 Time: {0} Reaction Time: {1}ms".format(t3, t3r))
 print("Total Test Time: {0}".format(tf))
+"""

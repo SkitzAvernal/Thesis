@@ -4,11 +4,10 @@ import pyfirmata
 import msvcrt as m
 from maxmatrix import LedMatrix
 from csv import writer
+import keyboard
 
 def wait():
     m.getch()
-
-# TODO: Timeout system?
 
 ts, t1, t1r, t2, t2r, t3, t3r, tf = "-", "-", "-", "-", "-", "-", "-", "-"
 # SET 1 - Simple Shapes
@@ -58,16 +57,16 @@ mail =  [[0, 0, 0, 0, 0, 0, 0, 0],
          [0, 1, 1, 1, 1, 1, 1, 0],
          [0, 0, 0, 0, 0, 0, 0, 0],
          [0, 0, 0, 0, 0, 0, 0, 0]]
-call =  [[1, 0, 0, 0, 0, 0, 0, 1],
-         [0, 1, 0, 0, 0, 0, 1, 0],
-         [0, 0, 1, 0, 0, 1, 0, 0],
-         [0, 0, 0, 1, 1, 0, 0, 0],
-         [0, 0, 0, 1, 1, 0, 0, 0],
-         [0, 0, 1, 0, 0, 1, 0, 0],
-         [0, 1, 0, 0, 0, 0, 1, 0],
-         [1, 0, 0, 0, 0, 0, 0, 1]]
+call =  [[0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 0, 0, 1, 1, 0, 0],
+         [0, 0, 0, 0, 1, 1, 0, 0],
+         [0, 0, 0, 0, 1, 1, 0, 0],
+         [0, 0, 0, 0, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0],
+         [0, 0, 1, 1, 1, 1, 0, 0]]
 
-
+curr = time.ctime(time.time())
 board = pyfirmata.Arduino('COM3')
 matrix = LedMatrix(board, 10, 9, 8)
 matrix.setup()
@@ -95,7 +94,7 @@ def timecount():
     # TODO: Change code to use screen.
     # TODO: Add randomizer and corresponding button
     # Each number corresponds to each 
-    rand = random.randrange(0, 3)
+    rand = random.randrange(0,4)
     matcher = -1
     match rand:
         case 0:
@@ -107,11 +106,12 @@ def timecount():
         case 3:
             matrix.draw_matrix(square)
 
+    """
     while m.kbhit():
         flush = wait() #Flush doesn't actually have an output, rather it's there to catch any stray inputs
     while (matcher==-1):
         key = m.getch()
-        #print(key)
+        print(key)
         match rand:
             case 0: #cross
                 if key == b"o":
@@ -126,6 +126,19 @@ def timecount():
                 if key == b";":
                     break
     ##key = wait()
+    """
+    match rand:
+        case 0: #cross
+            keyboard.wait('o')
+                
+        case 1: #circle
+            keyboard.wait('p')
+                    
+        case 2: #triangle
+            keyboard.wait('l')
+                    
+        case 3: #square
+            keyboard.wait(';')
     matrix.clear()
     msE = current_milli_time()
     return msE - msS
@@ -150,8 +163,8 @@ print("Test 2 Time: {0} Reaction Time: {1}ms".format(t2, t2r))
 print("Test 3 Time: {0} Reaction Time: {1}ms".format(t3, t3r))
 print("Total Test Time: {0}".format(tf))
 
-curr = time.ctime(time.time())
-List = [curr, t1, t1r, t2, t2r, t3, t3r, tf]
+#curr = time.ctime(time.time())
+List = ["8x8", curr, t1, t1r, t2, t2r, t3, t3r, tf]
 
 with open('test.csv', 'a') as f_object:
     writer_object = writer(f_object)
