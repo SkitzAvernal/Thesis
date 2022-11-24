@@ -23,13 +23,13 @@ curr = time.ctime(time.time())
 board = pyfirmata.Arduino('COM3')
 key = 0
 
-def stopwatch(sec):
+def stopwatch(sec): 
     mins = sec // 60
     sec = sec % 60
     hours = mins // 60
     mins = mins % 60
     return "{0}:{1}:{2}".format(int(hours),int(mins),int(sec))
-    
+
 def current_milli_time():
     return round(time.time() * 1000)
 
@@ -37,7 +37,7 @@ def alt_current_milli_time():
     return time.time_ns()
 
 def go_to_sleep():
-    tSleep = random.randrange(5, 10) # Program will go to sleep at random time between 10 seconds and 150 seconds (could be too high). For demo, it is 5 and 10 seconds
+    tSleep = random.randrange(10, 30) # Program will go to sleep at random time between 10 seconds and 150 seconds (could be too high). For demo, it is 5 and 10 seconds
     time.sleep(tSleep)
 
 def timecount():
@@ -54,6 +54,8 @@ def timecount():
     msE = current_milli_time()
     return msE - msS
 
+#print("Ready. Press Enter on the keyboard to start")
+#keyboard.wait('enter)
 input("Press Enter to Start")
 ts = time.time()
 go_to_sleep()
@@ -66,6 +68,8 @@ go_to_sleep()
 t3 = stopwatch(time.time() - ts)
 t3r = timecount()
 time.sleep(3) #TODO: Have a way to count when car finishes/tester presses a button
+out = input("Testing Complete. Press Enter to continue.") #Enter DNF and press enter if the participant cannot complete the course)
+#keyboard.wait('enter)
 tf = stopwatch(time.time() - ts)
 
 print("Final Results")

@@ -6,6 +6,7 @@ from maxmatrix import LedMatrix
 from csv import writer
 import keyboard
 
+matcher = 0
 def wait():
     m.getch()
 
@@ -86,25 +87,33 @@ def alt_current_milli_time():
     return time.time_ns()
 
 def go_to_sleep():
-    tSleep = random.randrange(5, 10) # Program will go to sleep at random time between 10 seconds and 150 seconds (could be too high). For demo, it is 5 and 10 seconds
+    tSleep = random.randrange(10, 30) # Program will go to sleep at random time between 10 seconds and 60 seconds (could be too high). For demo, it is 5 and 10 seconds
     time.sleep(tSleep)
 
 def timecount():
     msS = current_milli_time()
-    # TODO: Change code to use screen.
-    # TODO: Add randomizer and corresponding button
     # Each number corresponds to each 
     rand = random.randrange(0,4)
-    matcher = -1
-    match rand:
-        case 0:
-            matrix.draw_matrix(cross)
-        case 1:
-            matrix.draw_matrix(circle)
-        case 2:
-            matrix.draw_matrix(triangle)
-        case 3:
-            matrix.draw_matrix(square)
+    if (matcher == 1):
+        match rand:
+            case 0:
+                matrix.draw_matrix(cross)
+            case 1:
+                matrix.draw_matrix(mail)
+            case 2:
+                matrix.draw_matrix(call)
+            case 3:
+                matrix.draw_matrix(square)
+    else: 
+        match rand:
+            case 0:
+                matrix.draw_matrix(cross)
+            case 1:
+                matrix.draw_matrix(circle)
+            case 2:
+                matrix.draw_matrix(triangle)
+            case 3:
+                matrix.draw_matrix(square)
 
     """
     while m.kbhit():
@@ -131,10 +140,10 @@ def timecount():
         case 0: #cross
             keyboard.wait('o')
                 
-        case 1: #circle
+        case 1: #circle/mail
             keyboard.wait('p')
                     
-        case 2: #triangle
+        case 2: #triangle/call
             keyboard.wait('l')
                     
         case 3: #square
@@ -143,7 +152,11 @@ def timecount():
     msE = current_milli_time()
     return msE - msS
 
-input("Press Enter to Start")
+#print("Ready. Press Enter on the keyboard to start")
+#keyboard.wait('enter)
+mode = input("Press Enter to Start")
+if (mode == "C"):
+    matcher = 1
 ts = time.time()
 go_to_sleep()
 t1 = stopwatch(time.time() - ts)
@@ -154,7 +167,10 @@ t2r = timecount()
 go_to_sleep()
 t3 = stopwatch(time.time() - ts)
 t3r = timecount()
-time.sleep(3) #TODO: Have a way to count when car finishes/tester presses a button
+time.sleep(3)
+out = input("Testing Complete. Press Enter to continue.") #Enter DNF and press enter if the participant cannot complete the course)
+#keyboard.wait('enter')
+
 tf = stopwatch(time.time() - ts)
 
 print("Final Results")
@@ -166,7 +182,7 @@ print("Total Test Time: {0}".format(tf))
 #curr = time.ctime(time.time())
 List = ["8x8", curr, t1, t1r, t2, t2r, t3, t3r, tf]
 
-with open('test.csv', 'a') as f_object:
+with open('final_test.csv', 'a') as f_object:
     writer_object = writer(f_object)
     writer_object.writerow(List)
     f_object.close
